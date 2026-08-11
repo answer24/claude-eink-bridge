@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="1200" height="440" viewBox="0 0 1200 440"
+     role="img" aria-labelledby="title desc">
+  <title id="title">Claude Code E-Ink Bridge</title>
+  <desc id="desc">Claude Code session data flows through a local bridge to a real Zectrix e-ink dashboard.</desc>
+
+  <defs>
+    <clipPath id="photo-clip">
+      <rect x="742" y="24" width="434" height="392" rx="18"/>
+    </clipPath>
+    <filter id="mono" color-interpolation-filters="sRGB">
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="1.08" intercept="-0.03"/>
+        <feFuncG type="linear" slope="1.08" intercept="-0.03"/>
+        <feFuncB type="linear" slope="1.08" intercept="-0.03"/>
+      </feComponentTransfer>
+    </filter>
+    <pattern id="pixel-grid" width="12" height="12" patternUnits="userSpaceOnUse">
+      <path d="M12 0H0V12" fill="none" stroke="#2f2f2f" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="440" rx="24" fill="#111111"/>
+  <rect x="24" y="24" width="694" height="392" rx="18" fill="#171717" stroke="#414141" stroke-width="2"/>
+  <rect x="24" y="24" width="694" height="392" rx="18" fill="url(#pixel-grid)" opacity="0.34"/>
+
+  <g id="title-block" transform="translate(64 62)">
+    <text x="0" y="0" fill="#a5a5a0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+          font-size="18" letter-spacing="2">CLAUDE CODE / PHYSICAL STATUS DISPLAY</text>
+    <text x="0" y="86" fill="#f4f2ea" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif"
+          font-size="64" font-weight="760">E-Ink Bridge</text>
+    <text x="0" y="136" fill="#d6d5ce" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif"
+          font-size="25" font-weight="520">把 Claude Code 的实时状态放到桌面上</text>
+
+    <g id="signal-path" transform="translate(0 188)">
+      <rect x="0" y="0" width="170" height="48" rx="7" fill="#f4f2ea"/>
+      <text x="85" y="31" text-anchor="middle" fill="#111111"
+            font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700">CLAUDE CODE</text>
+      <path d="M184 24H222" fill="none" stroke="#f4f2ea" stroke-width="2"/>
+      <path d="m215 17 8 7-8 7" fill="none" stroke="#f4f2ea" stroke-width="2"/>
+      <rect x="238" y="0" width="132" height="48" rx="7" fill="none" stroke="#f4f2ea" stroke-width="2"/>
+      <text x="304" y="31" text-anchor="middle" fill="#f4f2ea"
+            font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20">BRIDGE</text>
+      <path d="M384 24H422" fill="none" stroke="#f4f2ea" stroke-width="2"/>
+      <path d="m415 17 8 7-8 7" fill="none" stroke="#f4f2ea" stroke-width="2"/>
+      <rect x="438" y="0" width="164" height="48" rx="7" fill="#f4f2ea"/>
+      <text x="520" y="31" text-anchor="middle" fill="#111111"
+            font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700">ZECTRIX</text>
+    </g>
+
+    <line x1="0" y1="280" x2="602" y2="280" stroke="#5c5c59" stroke-width="1"/>
+    <text x="0" y="322" fill="#f4f2ea" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="19">400×300 · 1-BIT · macOS</text>
+    <text x="602" y="322" text-anchor="end" fill="#a5a5a0"
+          font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18">LOCAL RENDER / AUTO PUSH</text>
+  </g>
+
+  <g id="real-device-proof" clip-path="url(#photo-clip)">
+    <image x="742" y="24" width="434" height="392" xlink:href="hero-device.jpg"
+           preserveAspectRatio="xMidYMid slice" filter="url(#mono)"/>
+    <rect x="742" y="24" width="434" height="392" fill="#000000" opacity="0.06"/>
+  </g>
+  <rect x="742" y="24" width="434" height="392" rx="18" fill="none" stroke="#f4f2ea" stroke-width="2"/>
+  <rect x="766" y="48" width="164" height="34" rx="4" fill="#111111" opacity="0.88"/>
+  <text x="848" y="70" text-anchor="middle" fill="#f4f2ea"
+        font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" letter-spacing="1">REAL DEVICE</text>
+</svg>

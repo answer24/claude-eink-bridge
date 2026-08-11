@@ -1,112 +1,54 @@
-# Claude Code E-Ink HUD 墨水屏桌面看板
+<p align="center">
+  <img src="./assets/readme/hero.png" width="100%" alt="Claude Code E-Ink Bridge：把 Claude Code 的实时状态显示在 Zectrix 墨水屏上">
+</p>
 
-[English](./README_EN.md)
+<p align="center">
+  <a href="./README_EN.md">English</a> · macOS · Claude Code · Zectrix
+</p>
 
-本项目是 [Claude HUD](https://github.com/jarrodwatts/claude-hud) 的硬件扩展桥接工具。它可以将你在终端使用 [Claude Code](https://docs.anthropic.com/zh-CN/docs/agents-and-tools/claude-code/overview) 时的实时状态（Token 消耗量、当前模型、上下文拥挤度等），无缝同步推送到你的 **Zectrix 墨水屏** 上，为你打造一个极客感满满的桌面 AI 物理看板。
+Claude Code E-Ink Bridge 是 [Claude HUD](https://github.com/jarrodwatts/claude-hud) 与 Zectrix 墨水屏之间的本地桥接器。它读取当前 Claude Code 会话状态，在 Mac 上渲染成 400×300 单色看板，并在数据变化时自动推送到桌面设备。
 
-![实拍效果图](device.jpg)
+> 当前仅支持 macOS。需要已可正常运行的 Claude Code、Claude HUD，以及可使用开放 API 的 Zectrix 墨水屏。
 
-*(上图为实机运行效果。另外本项目目前仅支持 macOS 环境)*
+## 实际效果
 
-## ✨ 功能特点
+<p align="center">
+  <img src="./preview.png" width="560" alt="400×300 的 Claude Code 墨水屏看板，显示模型、上下文、额度与会话状态">
+</p>
 
-- **无痕伴随运行**：完全非侵入式设计，不修改官方原版代码。打开 Claude Code 时作为“影子组件”自动唤醒，关闭终端后 10 分钟自动销毁，平时完全释放后台资源。
-- **极客级性能优化 (对 Mac 零负担)**：
-  - **SSD 零磨损**：图片渲染全程在内存流中完成，不会在硬盘频繁生成乱七八糟的临时图片。
-  - **强力防暴刷**：内建 30 秒磁盘冷却与 Hash 拦截机制。无论 AI 吐字多快，都不会引发 I/O 风暴，且只有数据改变时才发起网络请求（每次约 2KB 带宽）。
-- **多开追踪支持**：同时开好几个终端跑 Claude Code？没关系，它会自动扫描追踪并展示最新活跃的那个项目。
+一块屏幕集中显示：
 
----
+- 当前模型、项目目录与 Git 分支状态
+- 输入、输出与缓存 Token
+- 上下文占用量和 5 小时 / 7 天额度
+- 额度重置倒计时、会话时长、活跃会话数和更新时间
 
-## 📂 核心项目文件说明
+## 快速开始
 
-如果你想研究或二次开发，这里是各个文件的用途：
-- `install.sh` / `install.command`：为 Mac 用户准备的一键闪电安装脚本。
-- `eink-wrapper.ts`：核心拦截器，负责“窃听”并截获 Claude 发送的内部状态。
-- `setup-eink.mjs`：安装程序的底层配置脚本，负责把拦截器绑定到 Claude。
-- `main.py`：Python 渲染主程序，负责把数据画成图片并推送到 Zectrix 墨水屏。
-- `preview.png`：本说明文档顶部引用的演示图片。
-- `font.ttf`：开源的 MiSans 字体文件，用于给 Python 渲染文字。
-- `config.example.json`：默认的配置文件模板。
+### 1. 准备环境
 
----
+- macOS
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code/getting-started)
+- [Claude HUD](https://github.com/jarrodwatts/claude-hud)
+- Python 3、Git，以及 Node.js 或 Bun
+- Zectrix 设备及其云平台 API 权限
 
-## 📊 面板信息与布局
-
-![面板渲染原图](preview.png)
-
-- **顶部状态栏**：可自定义的问候语（默认为“今天的Token用完了吗？”），以及数据最后更新的日期。
-- **项目与模型信息**：当前正在使用的模型名称（如 `Claude 3.6 Sonnet`）、当前所在的代码项目文件夹名称，以及 Git 分支状态（如果有未提交的代码更改，会显示 `*` 星号）。
-- **Token 消耗明细**：模型名称下方会实时显示本次会话的 Token 用量，并细分为输入（in）、输出（out）、缓存（cache）三项，方便你一眼看清楚钱花在哪里。
-- **上下文健康度 (CONTEXT)**：直观的进度条显示当前对话上下文的拥挤程度，并附带精确的 Token 消耗量（比如 `82k / 200k`）。当上下文即将爆满时，会有超额预警。
-- **API 额度使用率 (USAGE)**：分别展示 5 小时内和 7 天内的 API 额度使用百分比进度条。最实用的是，它还会显示额度重置的**倒计时**（例如 `2h15m`），让你精准掌握满血复活的时间。
-- **底部状态栏**：显示本次 Session 对话已经持续的时间、是否有多个代码终端在同时运行，以及当前的时钟。
-
----
-
-## 🛠️ 安装准备 (只需一次)
-
-### 前置条件
-在安装本工具前，请确保你的电脑已经安装了以下基础工具：
-1. **[Claude Code](https://docs.anthropic.com/zh-CN/docs/agents-and-tools/claude-code/overview)**。
-2. **[Claude HUD](https://github.com/jarrodwatts/claude-hud)**：原版的图形化面板工具，请先确保它能正常运行。
-3. **[Node.js](https://nodejs.org/)** 和 **[Python 3](https://www.python.org/downloads/)**：运行脚本所需的基础环境。
-
-### 一键安装 (推荐)
-无需下载源码、解压、找文件夹。你只需要打开 Mac 的 **终端 (Terminal)**，复制下面这行命令粘贴进去，然后按回车：
+### 2. 一键安装
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/BarryBarrywu/claude-eink-bridge/main/install.sh | bash
 ```
 
-**这个命令会自动在后台帮你做好一切：**
-1. 自动下载代码到目录 `~/.claude-eink-bridge`。
-2. 自动配置拦截器和依赖环境。
-3. 自动生成一个默认的配置文件。
+安装脚本会把项目放到 `~/.claude-eink-bridge`，创建 Python 虚拟环境，将 wrapper 接入 Claude Code 的 `statusLine`，并在首次安装时打开配置文件。
 
-当终端里弹出 `🎉 闪电安装全部完成！` 的提示时，**系统会自动弹出一个文本编辑窗口**打开 `config.json` 文件（如果没有自动弹出，你也可以手动运行 `open ~/.claude-eink-bridge/config.json` 或者是用 VSCode 打开它）。
+### 3. 绑定设备
 
-### 多个 Claude 配置目录 (CLAUDE_CONFIG_DIR)
+登录 [Zectrix 云平台](https://cloud.zectrix.com/)，在 `~/.claude-eink-bridge/config.json` 中填写：
 
-如果你用 `CLAUDE_CONFIG_DIR` 跑了一个非默认的 Claude 实例（例如 `~/.claude-team`），安装脚本会把拦截器装到**正确的那个目录**，而不是写死的 `~/.claude`：
-
-- 探测到多个配置目录时，安装过程会列出来让你选；
-- 也可以显式指定（适合非交互/脚本场景）：
-
-```bash
-# 方式一：环境变量
-CLAUDE_CONFIG_DIR="$HOME/.claude-team" bash install.sh
-# 方式二：命令行参数
-bash install.sh --config-dir "$HOME/.claude-team"
-```
-
-> 不设置时行为不变，默认安装到 `~/.claude`。手动跑 `main.py` 时同样会读取 `CLAUDE_CONFIG_DIR`（由 Claude Code 自动拉起桥接时会自动继承，无需手动设置）。
-
----
-
-## ⚙️ 绑定墨水屏 (Zectrix 平台配置)
-
-接下来的操作都需要在网页后台进行获取，请先在浏览器打开并登录 Zectrix 云平台：**https://cloud.zectrix.com/**
-
-在 `config.json` 里，你需要填写以下三个关键参数：`api_key`、`mac_address` 和 `page_id`。
-
-### 1. 获取 API Key (`api_key`)
-- 在 Zectrix 云平台左侧点击 **开放API** 。
-- 点击“创建API Key”，将生成的那串代码复制并替换掉 `config.json` 里的 `"YOUR_ZECTRIX_API_KEY"`。
-
-### 2. 获取设备 MAC 地址 (`mac_address`)
-- 在 Zectrix 云平台左侧点击 **设备管理**，找到你的墨水屏，复制它的 MAC 地址并填入 `config.json`。
-
-### 3. 设置页面 ID (`page_id`)
-墨水屏可以有多个页面，由于推送的内容会直接覆盖掉原有的页面，你需要告诉程序推送到第几页：
-- 配置文件中默认 `page_id` 填的是 `5`，也就是说它会自动覆盖推送到你的墨水屏的第 5 页。
-- 如果你的屏幕平时只用前 3 页，或者你想让它推送到其他页面（比如第 1 页主页），只需要将 `config.json` 里的 `page_id` 修改为你想要的数字即可（注意：填数字，不要加双引号）。
-
-**最终你的 `config.json` 应该长这样：**
 ```json
 {
-  "api_key": "sec_1234567890abcdef",
-  "mac_address": "A1:B2:C3:D4:E5:F6",
+  "api_key": "YOUR_ZECTRIX_API_KEY",
+  "mac_address": "AA:BB:CC:DD:EE:FF",
   "page_id": 5,
   "interval_seconds": 60,
   "greeting": "今天的Token用完了吗？",
@@ -114,65 +56,114 @@ bash install.sh --config-dir "$HOME/.claude-team"
 }
 ```
 
-> **💡 小贴士：** 为了获得最佳的看板体验，建议在 Zectrix 后台将设备的“轮询时间”设置为 **1分钟**，同时保持 `config.json` 里的 `interval_seconds` 为 **60**。
+其中 `api_key`、`mac_address` 和 `page_id` 是必填项。建议把 Zectrix 设备轮询时间设为 1 分钟，并保留默认的 `interval_seconds: 60`。
 
----
+### 4. 启动 Claude Code
 
-## 🚀 开始使用
+```bash
+claude
+```
 
-在终端里输入 `claude` 正常使用你的 Claude Code。几秒钟后，你的墨水屏就会自动刷新出炫酷的实时面板！
+wrapper 会随 Claude Code 状态栏运行，桥接进程按需启动。没有新会话快照超过 10 分钟后，进程会自动退出；下次启动 Claude Code 时会再次唤醒。
 
-当你结束工作，关闭所有 Claude Code 进程后 10 分钟，后台进程也会自动安静退出，不留痕迹。
+## 工作方式
 
----
+<p align="center">
+  <img src="./assets/readme/workflow.svg" width="100%" alt="Claude Code 状态经 wrapper、节流快照和本地渲染后推送到 Zectrix 墨水屏">
+</p>
 
-## ❓ 常见问题排查 (FAQ)
+- `eink-wrapper.ts` 在保留 Claude HUD 原有输出的同时，最多每 30 秒写入一次会话快照。
+- `main.py` 选择最近活跃的会话，在内存中渲染 1-bit PNG。
+- 主循环默认每 60 秒检查一次；数据未变化时跳过渲染和网络推送。
+- 多个 Claude Code 会话并存时，屏幕显示最近更新的项目，并在底部标出活跃会话数。
 
-**Q: 我填好了配置，为什么屏幕一直不刷新？**
-A: 可以尝试手动排查。打开 Mac 的终端 (Terminal)，输入以下命令：
+## 多个 Claude 配置目录
+
+如果你通过 `CLAUDE_CONFIG_DIR` 使用非默认配置目录，安装器会优先采用显式参数或环境变量；检测到多个目录时也会让你选择。
+
+```bash
+# 环境变量
+CLAUDE_CONFIG_DIR="$HOME/.claude-team" bash install.sh
+
+# 命令行参数
+bash install.sh --config-dir "$HOME/.claude-team"
+```
+
+未指定时默认使用 `~/.claude`。
+
+## 配置项
+
+| 配置项 | 必填 | 作用 |
+| --- | :---: | --- |
+| `api_key` | 是 | Zectrix 开放 API 密钥 |
+| `mac_address` | 是 | 目标设备 MAC 地址 |
+| `page_id` | 是 | 要覆盖推送的设备页面 |
+| `interval_seconds` | 否 | 检查数据并尝试推送的间隔，默认 60 秒 |
+| `greeting` | 否 | 顶部问候语，过长时自动截断 |
+| `font_path` | 否 | 本地 TTF 字体路径，默认 `font.ttf` |
+
+## 排查问题
+
+<details>
+<summary><strong>屏幕没有刷新</strong></summary>
+
+先生成一次本地预览：
+
 ```bash
 cd ~/.claude-eink-bridge
 source .venv/bin/activate
 python main.py --preview
 ```
-这会在文件夹里生成一张 `preview-local.png` 图片，如果没有生成或者报错，说明配置填写有误或网络不通。如果生成了但屏幕没变，说明是 Zectrix API Key 或 Mac 地址填错了。
 
-**Q: 更新了项目代码后，改动没有生效？**
-A: 这是正常现象。Claude Code 实际运行的是安装时复制到 `~/.claude/eink-wrapper.ts` 的文件，而不是项目目录里的源文件。每次拉取新代码后，需要重新运行一次安装命令让改动生效：
+如果生成了 `preview-local.png`，说明配置加载和本地渲染路径可以工作。屏幕仍不更新时，重点检查会话快照、`api_key`、`mac_address`、`page_id`、设备联网状态和 Zectrix 轮询设置。
+</details>
+
+<details>
+<summary><strong>更新代码后没有生效</strong></summary>
+
+Claude Code 运行的是安装到配置目录中的 `eink-wrapper.ts`。重新执行安装命令会保留已有的虚拟环境与 `config.json`，并更新 wrapper：
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/BarryBarrywu/claude-eink-bridge/main/install.sh | bash
 ```
-安装脚本会跳过已有的 venv 和 config，只更新拦截器文件，不会影响你的配置。
+</details>
 
-**Q: 我修改了配置（比如改了问候语、换了字体），怎么重启服务让它生效？**
-A: 因为程序为了做到完全无感，是一直在后台静默运行的，它不会实时监听配置变化。你需要先强制关掉它。打开终端运行：
+<details>
+<summary><strong>修改配置后如何重启</strong></summary>
+
 ```bash
 pkill -f main.py
 ```
-运行完毕后没有任何提示是正常的。接着你只需在任意终端重新输入 `claude` 唤醒 Agent，它就会自动拉起全新的后台服务，你的新配置也就生效了！
 
-**Q: 怎么卸载这个工具，恢复到原版状态？**
-A: 打开终端，运行以下命令，即可解除对 Claude Code 的绑定：
+然后重新启动 `claude`。桥接器会读取新的配置并按需启动。
+</details>
+
+<details>
+<summary><strong>如何卸载并恢复原状态栏</strong></summary>
+
 ```bash
 node ~/.claude-eink-bridge/setup-eink.mjs --undo
 ```
 
-**Q: 推送过去的不是图片吗？为什么还需要配置字体文件？**
-A: 是的，最终推送到墨水屏的确实是一张图片。但这块“画板”是在你的电脑本地实时渲染生成的。程序在把 Claude 消耗的“文字数据”转化为“图片”时，必须要依赖 `font.ttf` 字体文件作为画笔，才能知道如何绘制文字。
-本项目默认已经为你内置了 **小米的 MiSans (Medium)** 字体，它在墨水屏上显示极为清晰，且属于全社会免费商用的开源字体，你可以放心使用。
+如果使用了非默认 Claude 配置目录，请在命令前提供相同的 `CLAUDE_CONFIG_DIR`。
+</details>
 
-**Q: 我想自定义顶部的问候语？**
-A: 没问题！只需打开 `~/.claude-eink-bridge/config.json`，更改 `greeting` 后面的文字即可（比如 `"greeting": "Code, Eat, Sleep"`）。注意：为了排版美观，建议不要超过 12 个中文字符或 25 个英文字母，超出的部分会被自动截断显示为 `...`。
+## 项目结构
 
-**Q: 我想换个别的字体？**
-A: 只要把你想用的中文字体（`.ttf` 格式）放到 `~/.claude-eink-bridge` 文件夹里，重命名为 `font.ttf`，覆盖现有的文件即可（或者修改 `config.json` 里的 `font_path` 绝对路径）。比如换成你喜欢的复古像素字体！
+| 文件 | 作用 |
+| --- | --- |
+| `eink-wrapper.ts` | 转发 Claude HUD 状态并生成分会话快照 |
+| `main.py` | 选择会话、渲染看板并调用 Zectrix API |
+| `setup-eink.mjs` | 安装或恢复 Claude Code `statusLine` 配置 |
+| `install.sh` / `install.command` | macOS 安装入口 |
+| `config.example.json` | 配置模板 |
+| `font.ttf` | 默认 MiSans 字体 |
 
----
+## 关注项目
 
-## 📺 关注我们
+- [极趣实验室](https://space.bilibili.com/13131424)：Zectrix 墨水屏硬件与桌搭内容
+- [最近使用](https://space.bilibili.com/217963572)：项目作者的苹果生态与 AI 效率内容
 
-如果这个小工具帮助到了你，或者让你的桌面变得更酷了，**欢迎来 B 站关注我们！**
+## License
 
-- 🔲 **[极趣实验室 (硬件官方)](https://space.bilibili.com/13131424)**：这块超酷的 Zectrix 墨水屏就是出自他们之手！关注获取更多硬核桌搭硬件。
-- 👨‍💻 **[最近使用 (本项目作者)](https://space.bilibili.com/217963572)**：欢迎订阅我的频道，一起折腾更多有趣的苹果生态与 AI 效率工具！
-
+[MIT](./LICENSE)

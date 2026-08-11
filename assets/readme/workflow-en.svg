@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="340" viewBox="0 0 1200 340"
+     role="img" aria-labelledby="title desc">
+  <title id="title">Claude Code E-Ink Bridge workflow</title>
+  <desc id="desc">Claude Code status passes through a transparent wrapper, throttled snapshots, local rendering, and then to a Zectrix display.</desc>
+  <rect width="1200" height="340" rx="24" fill="#f4f2ea"/>
+  <text x="54" y="62" fill="#111111" font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+        font-size="18" letter-spacing="2">HOW THE SIGNAL MOVES</text>
+  <text x="54" y="112" fill="#111111" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif"
+        font-size="40" font-weight="720">From terminal status to a physical display</text>
+
+  <g transform="translate(54 158)" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, sans-serif">
+    <g>
+      <rect width="220" height="126" rx="10" fill="#111111"/>
+      <text x="20" y="34" fill="#a5a5a0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18">01 / SOURCE</text>
+      <text x="20" y="72" fill="#f4f2ea" font-size="25" font-weight="700">Claude Code</text>
+      <text x="20" y="102" fill="#d6d5ce" font-size="18">Session + usage</text>
+    </g>
+    <path d="M230 63H272" stroke="#111111" stroke-width="2"/>
+    <path d="m265 56 8 7-8 7" fill="none" stroke="#111111" stroke-width="2"/>
+    <g transform="translate(284)">
+      <rect width="220" height="126" rx="10" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+      <text x="20" y="34" fill="#666662" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18">02 / FORWARD</text>
+      <text x="20" y="72" fill="#111111" font-size="25" font-weight="700">eink-wrapper.ts</text>
+      <text x="20" y="102" fill="#4b4b48" font-size="18">Forward + snapshot</text>
+    </g>
+    <path d="M514 63H556" stroke="#111111" stroke-width="2"/>
+    <path d="m549 56 8 7-8 7" fill="none" stroke="#111111" stroke-width="2"/>
+    <g transform="translate(568)">
+      <rect width="220" height="126" rx="10" fill="#ffffff" stroke="#111111" stroke-width="2"/>
+      <text x="20" y="34" fill="#666662" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18">03 / RENDER</text>
+      <text x="20" y="72" fill="#111111" font-size="25" font-weight="700">main.py</text>
+      <text x="20" y="102" fill="#4b4b48" font-size="18">Render 400×300 PNG</text>
+    </g>
+    <path d="M798 63H840" stroke="#111111" stroke-width="2"/>
+    <path d="m833 56 8 7-8 7" fill="none" stroke="#111111" stroke-width="2"/>
+    <g transform="translate(852)">
+      <rect width="240" height="126" rx="10" fill="#111111"/>
+      <text x="20" y="34" fill="#a5a5a0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18">04 / DISPLAY</text>
+      <text x="20" y="72" fill="#f4f2ea" font-size="25" font-weight="700">Zectrix E-Ink</text>
+      <text x="20" y="102" fill="#d6d5ce" font-size="18">Push changed data</text>
+    </g>
+  </g>
+</svg>
